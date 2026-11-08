@@ -1,0 +1,117 @@
+{
+  "title": "Library system",
+  "packages": [
+    { "id": "domain", "label": "Domain" },
+    { "id": "services", "label": "Services" },
+    { "id": "infra", "label": "Infrastructure" }
+  ],
+  "classes": [
+    {
+      "id": "Item",
+      "kind": "abstract",
+      "package": "domain",
+      "attributes": [
+        "- id: UUID",
+        "- title: string"
+      ],
+      "methods": [
+        "+ available(): boolean",
+        "+ loanDays(): int"
+      ]
+    },
+    {
+      "id": "Book",
+      "package": "domain",
+      "attributes": [
+        "- isbn: string",
+        "- pages: int"
+      ],
+      "methods": [
+        "+ loanDays(): int"
+      ]
+    },
+    { "id": "Dvd", "package": "domain", "attributes": [ "- minutes: int" ], "methods": [ "+ loanDays(): int" ] },
+    {
+      "id": "Member",
+      "package": "domain",
+      "attributes": [
+        "- name: string",
+        "- email: string"
+      ],
+      "methods": [
+        "+ canBorrow(): boolean"
+      ]
+    },
+    {
+      "id": "Loan",
+      "package": "domain",
+      "attributes": [
+        "- dueOn: Date",
+        "- returnedOn: Date"
+      ],
+      "methods": [
+        "+ isOverdue(): boolean"
+      ]
+    },
+    {
+      "id": "LoanStatus",
+      "kind": "enum",
+      "package": "domain",
+      "attributes": [
+        "ACTIVE",
+        "RETURNED",
+        "OVERDUE"
+      ]
+    },
+    {
+      "id": "Notifier",
+      "kind": "interface",
+      "package": "services",
+      "methods": [
+        "+ send(to: Member, msg: string)"
+      ]
+    },
+    {
+      "id": "LoanService",
+      "package": "services",
+      "attributes": [
+        "- loans: LoanRepo"
+      ],
+      "methods": [
+        "+ checkout(m: Member, i: Item): Loan",
+        "+ giveBack(l: Loan)"
+      ]
+    },
+    {
+      "id": "EmailNotifier",
+      "package": "infra",
+      "attributes": [
+        "- smtpHost: string"
+      ],
+      "methods": [
+        "+ send(to: Member, msg: string)"
+      ]
+    }
+  ],
+  "relations": [
+    { "from": "Book", "to": "Item", "type": "inherits" },
+    { "from": "Dvd", "to": "Item", "type": "inherits" },
+    { "from": "EmailNotifier", "to": "Notifier", "type": "implements" },
+    {
+      "from": "Member",
+      "to": "Loan",
+      "type": "aggregates",
+      "fromMult": "1",
+      "toMult": "0..*",
+      "label": "borrows"
+    },
+    { "from": "Loan", "to": "Item", "type": "associates", "fromMult": "*", "toMult": "1", "label": "of" },
+    { "from": "Loan", "to": "LoanStatus", "type": "associates" },
+    { "from": "LoanService", "to": "Loan", "type": "composes", "toMult": "*", "label": "manages" },
+    { "from": "LoanService", "to": "Notifier", "type": "depends", "label": "notifies" }
+  ],
+  "views": [
+    { "id": "lending", "label": "Lending", "classes": [ "Member", "Loan", "Item", "LoanService", "Notifier" ] },
+    { "id": "inheritance", "label": "Item hierarchy", "classes": [ "Item", "Book", "Dvd" ] }
+  ]
+}

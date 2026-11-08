@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UML Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f6f7;--pn:#fff;--p2:#f0f0f2;--ln:#e1e1e5;--tx:#17171a;--mu:#6c6c76;--ac:#b45309;--eg:#9a9aa6;--dot:#dcdce1;color-scheme:light;box-sizing:border-box}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#101011;--pn:#171719;--p2:#1f1f23;--ln:#2a2a2f;--tx:#f2f2f4;--mu:#9b9ba5;--ac:#f5b84b;--eg:#6a6a74;--dot:#212126;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#101011;--pn:#171719;--p2:#1f1f23;--ln:#2a2a2f;--tx:#f2f2f4;--mu:#9b9ba5;--ac:#f5b84b;--eg:#6a6a74;--dot:#212126;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.55 Geist,system-ui,sans-serif;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:24px 24px;padding-bottom:env(safe-area-inset-bottom,0px)}
+button,input,textarea{font:inherit;color:inherit}
+button{background:var(--p2);border:1px solid var(--ln);border-radius:10px;padding:6px 12px;cursor:pointer;transition:border-color .2s,background .2s}
+button:hover{border-color:var(--eg)}button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.sp{flex:1}.wrap{max-width:1248px;margin:0 auto;padding:0 24px}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}@keyframes fadein{from{opacity:0}}@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.96)}}@keyframes bl{50%{opacity:0}}
+.nav{position:sticky;top:0;z-index:20;padding:calc(14px + env(safe-area-inset-top,0px)) 24px 14px;backdrop-filter:blur(12px);background:color-mix(in srgb,var(--bg) 70%,transparent)}
+.navin{max-width:1248px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.pill{display:flex;align-items:center;gap:2px;background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:6px}
+.logo{gap:9px;padding:8px 14px;font-weight:600;font-size:17px;color:var(--tx);text-decoration:none;letter-spacing:-.01em}
+.links a{color:var(--mu);padding:7px 13px;border-radius:10px;text-decoration:none;transition:background .2s,color .2s}.links a:hover{background:var(--p2);color:var(--tx)}
+.vr{width:1px;height:20px;background:var(--ln);margin:0 6px}
+.cta{background:var(--tx);color:var(--bg);border-radius:999px;padding:10px 20px;text-decoration:none;font-weight:500;transition:transform .2s}.cta:hover{transform:translateY(-1px)}
+.ic{width:36px;height:36px;display:grid;place-items:center;border:0;background:none;border-radius:11px;color:var(--mu);padding:0;transition:background .2s,color .2s}
+.ic:hover{background:var(--p2);color:var(--tx)}.ic.on{background:var(--p2);color:var(--tx)}
+.ic svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.hero{text-align:center;padding:92px 0 96px}
+.hero h1{font-size:clamp(42px,7.2vw,84px);line-height:1.04;letter-spacing:-.04em;font-weight:600;margin:0 auto;max-width:980px}
+.hero em{font-style:normal;color:var(--ac)}
+.hero p{color:var(--mu);font-size:20px;max-width:620px;margin:24px auto 30px}
+.hero .row{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap}
+.cmd{display:inline-flex;align-items:center;gap:12px;background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:6px 6px 6px 18px;font:14px 'Geist Mono',monospace}
+.cmd b{color:var(--mu);font-weight:400}.ghost{border:1px solid var(--ln);background:var(--pn);border-radius:16px;padding:13px 20px;color:var(--tx);text-decoration:none;font-weight:500;transition:border-color .2s}.ghost:hover{border-color:var(--eg)}
+.hero small{display:block;color:var(--mu);margin-top:18px;font-size:13px}
+.hero h1 .a,.hero p,.hero .row,.hero small{animation:rise .7s cubic-bezier(.2,.7,.2,1) backwards}
+.hero h1 .a:nth-child(1){animation-delay:.05s}.hero h1 .a:nth-child(2){animation-delay:.18s}.hero p{animation-delay:.32s}.hero .row{animation-delay:.44s}.hero small{animation-delay:.56s}
+.hero h1 .a{display:block}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s cubic-bezier(.2,.7,.2,1)}.rv.in{opacity:1;transform:none}
+.how{padding-bottom:96px}
+.eyebrow{display:flex;align-items:center;gap:10px;color:var(--mu);font-size:14px}.eyebrow i{width:9px;height:9px;border-radius:2px;background:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 25%,transparent)}
+.how h2{font-size:clamp(34px,5vw,58px);line-height:1.06;letter-spacing:-.035em;margin:18px 0;font-weight:600}
+.lede{color:var(--mu);font-size:19px;max-width:640px;margin:0 0 56px}
+.stw{position:relative}.track{position:absolute;left:0;right:0;top:5px;height:1px;background:var(--ln)}.track i{display:block;height:100%;background:var(--tx);width:0;transition:width .8s cubic-bezier(.4,0,.2,1)}
+#steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+#steps li{position:relative;padding-top:28px;cursor:pointer;opacity:.42;transition:opacity .5s}#steps li.on,#steps li.done{opacity:1}
+#steps li::before{content:'';position:absolute;left:0;top:0;width:11px;height:11px;border-radius:2px;background:var(--bg);border:1px solid var(--eg);transition:all .4s}
+#steps li.done::before{background:var(--tx);border-color:var(--tx)}#steps li.on::before{background:var(--ac);border-color:var(--ac);transform:rotate(45deg) scale(1.05);box-shadow:0 0 0 5px color-mix(in srgb,var(--ac) 22%,transparent)}
+#steps small{font:12px 'Geist Mono',monospace;color:var(--mu)}#steps h3{margin:6px 0;font-size:21px;letter-spacing:-.02em}#steps p{margin:0;color:var(--mu);font-size:14.5px}#steps code{font:13px 'Geist Mono',monospace;color:var(--tx)}
+.demo{display:grid;grid-template-columns:1fr 1fr;margin-top:40px;height:470px;background:var(--pn);border:1px solid var(--ln);border-radius:22px;overflow:hidden}
+.dl,.dr{display:flex;flex-direction:column;min-height:0}.dl{border-right:1px solid var(--ln)}
+.dh{display:flex;align-items:center;gap:10px;padding:15px 20px;border-bottom:1px solid var(--ln);font:13px 'Geist Mono',monospace;color:var(--mu)}.dr .dh{color:var(--tx)}
+.tag{margin-left:auto;border:1px solid var(--ln);border-radius:999px;padding:1px 11px;font:12px Geist,sans-serif;color:var(--mu);transition:opacity .3s}.tag:empty{opacity:0}
+#term,#pane{flex:1;overflow:auto;padding:16px 20px;font:12.5px/1.6 'Geist Mono',monospace}
+.tl{margin:7px 0;color:var(--tx)}.tl.old{opacity:.5}.tl.new{animation:rise .45s backwards}
+.prompt{border:1px solid var(--ln);background:var(--p2);border-radius:12px;padding:10px 14px;font:13px Geist,sans-serif}.prompt i{color:var(--ac);font-style:normal;margin-right:10px}
+.tl b{font-weight:600;margin-right:6px}.tl u{text-decoration:none;color:var(--mu)}.tl s{display:block;text-decoration:none;color:var(--mu);padding-left:14px}.er{color:#f0705f}.ok{color:#5fcf84}
+.jl{display:flex;gap:16px;white-space:pre}.jl.an{animation:rise .4s backwards}.jl i{width:16px;text-align:right;color:var(--mu);font-style:normal;flex:none}.jl b{font-weight:600}.jl .s{color:#7ea6ff}
+.jl.del{background:#f0705f1f;text-decoration:line-through;color:var(--mu)}.jl.add{background:#5fcf841f}
+.caret{display:inline-block;width:7px;height:15px;background:var(--tx);animation:bl 1s steps(2) infinite;vertical-align:middle}
+.pv svg{width:100%;max-height:360px}.pv .bx{fill:none;stroke:var(--eg);stroke-width:1.4}
+.pv .n{animation:pop .5s backwards;transform-box:fill-box;transform-origin:center}.pv ellipse{fill:color-mix(in srgb,var(--c) 12%,var(--pn));stroke:color-mix(in srgb,var(--c) 55%,var(--ln));stroke-width:1.5}
+.pv text{fill:var(--tx);font:600 13px Geist,sans-serif}.pv text.sm{fill:var(--mu);font:500 10px 'Geist Mono',monospace}.pv .fig{fill:none;stroke:var(--tx);stroke-width:1.6;stroke-linecap:round}
+.pv .ed{animation:fadein .6s .6s backwards}.pv .ed path{stroke:var(--eg);fill:none;stroke-width:1.5}.pv .ed .d{stroke-dasharray:5 4}
+.crumb{color:var(--mu);font-size:13px}.wh{display:flex;align-items:center;gap:12px;margin:8px 0 2px;flex-wrap:wrap}
+.wh .ico{width:40px;height:40px;border:1px solid var(--ln);border-radius:12px;display:grid;place-items:center;background:var(--pn)}.wh .ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6}
+.wh h2{margin:0;font-size:32px;letter-spacing:-.03em;font-weight:600}.badge{border:1px solid var(--ln);border-radius:999px;padding:1px 12px;font-size:13px;background:var(--pn)}#meta{color:var(--mu);font-size:14px}
+#views{display:flex;gap:24px;border-bottom:1px solid var(--ln);margin:12px 0 16px}#views button{background:none;border:0;border-bottom:2px solid transparent;border-radius:0;padding:9px 0;margin-bottom:-1px;color:var(--mu);transition:color .2s,border-color .2s}#views button.on{color:var(--tx);border-bottom-color:var(--tx)}
+.grid{display:grid;grid-template-columns:1fr 330px;gap:16px;margin-bottom:96px}
+.panel,#insp{height:min(76vh,760px);min-height:540px;background:var(--pn);border:1px solid var(--ln);border-radius:22px}
+.panel{position:relative;overflow:hidden}
+#stage{position:absolute;inset:0;overflow:hidden;cursor:grab;touch-action:pan-y;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:24px 24px}
+#world{position:absolute;left:0;top:0;transform-origin:0 0}#svg{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible}
+.tb,.zm{position:absolute;z-index:3;display:flex;align-items:center;gap:2px;background:var(--bg);border:1px solid var(--ln);border-radius:16px;padding:5px}.tb{left:14px;top:14px}.zm{left:14px;bottom:14px}.zm span{min-width:48px;text-align:center;font:13px 'Geist Mono',monospace}
+#q{width:0;opacity:0;border:0;background:none;outline:0;padding:0;transition:width .3s cubic-bezier(.2,.7,.2,1),opacity .2s}.tb.s #q{width:170px;opacity:1;padding:0 8px}
+#ed{position:absolute;z-index:4;left:0;top:0;bottom:0;width:min(440px,92%);background:var(--pn);border-right:1px solid var(--ln);display:flex;flex-direction:column;transform:translateX(-102%);transition:transform .4s cubic-bezier(.2,.8,.2,1);box-shadow:10px 0 40px #0004}#ed.open{transform:none}
+#src{flex:1;border:0;resize:none;padding:16px 20px;background:transparent;font:12.5px/1.6 'Geist Mono',monospace;white-space:pre;outline:0}
+#diag{margin:0;padding:8px 18px;list-style:none;max-height:140px;overflow:auto;font-size:12.5px;border-top:1px solid var(--ln)}#diag li{color:#f0705f;margin:2px 0}#diag li.ok{color:#5fcf84}
+.tools{display:flex;gap:8px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid var(--ln)}
+#pill{position:absolute;left:50%;top:16px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:6px 16px;border-radius:999px;font-size:13px;display:none;z-index:5}
+#insp{padding:24px;overflow:auto}#insp>*{animation:fadein .3s backwards}.lab{margin:0;color:var(--mu);font-size:13px}#insp h3{margin:2px 0 6px;font-size:22px;letter-spacing:-.02em}#insp p{margin:8px 0}.mu{color:var(--mu)}
+.h4{margin:22px 0 6px!important;font-weight:600;font-size:14px}
+.lg,.it{display:flex;align-items:center;gap:12px;padding:6px 0;cursor:pointer;transition:opacity .2s}.lg.off{opacity:.4}.lg b{margin-left:auto;font-weight:400;color:var(--mu)}.dot{width:9px;height:9px;border-radius:2px;background:var(--g);display:inline-block}
+.it{font:13px 'Geist Mono',monospace;padding:4px 0;color:var(--mu)}.it:hover{color:var(--tx)}.it i{color:var(--ac);font-style:normal;width:10px}.hint{font-size:13px;color:var(--mu);margin-top:22px!important}
+#insp ul{list-style:none;margin:4px 0;padding:0}#insp li{padding:4px 0;border-bottom:1px dashed var(--ln);font:12.5px 'Geist Mono',monospace}#insp a{color:var(--ac);cursor:pointer}.back{display:inline-block;margin-bottom:14px;color:var(--mu)!important;font-size:13px}
+kbd{font:11px 'Geist Mono',monospace;border:1px solid var(--ln);border-radius:5px;padding:0 5px}
+.card{position:absolute;background:color-mix(in srgb,var(--g,#888) 9%,var(--pn));border:1px solid color-mix(in srgb,var(--g,#888) 42%,var(--ln));border-radius:12px;overflow:hidden;transition:opacity .25s,box-shadow .25s,transform .25s;user-select:none}
+.card:hover{transform:translateY(-2px)}.card.enter{animation:pop .55s cubic-bezier(.2,.8,.2,1) backwards}
+.card header{box-shadow:inset 0 3px 0 var(--g);text-align:center;display:flex;flex-direction:column;justify-content:center;padding:3px 8px 0}
+.card header small{font:11px 'Geist Mono',monospace;color:var(--mu);line-height:12px}.card header b{font-weight:600;font-size:14px}.card header b.ab{font-style:italic}
+.cp{border-top:1px solid color-mix(in srgb,var(--g,#888) 30%,var(--ln));padding:4px 11px;overflow:hidden}
+.m{height:18px;line-height:18px;font:12px 'Geist Mono',monospace;white-space:nowrap}.m i{display:inline-block;width:12px;color:var(--ac);font-style:normal}
+.card.sel{box-shadow:0 0 0 2px var(--ac),0 12px 32px #0005}.card.dim{opacity:.16}
+.edge{color:var(--eg);transition:opacity .25s,color .25s}.edge.enter{animation:fadein .7s .5s backwards}.edge.dim{opacity:.1}.edge.on{color:var(--ac)}
+.edge path,.edge polygon{stroke:currentColor;fill:none;stroke-width:1.4}.edge.on path,.edge.on polygon{stroke-width:2}.edge .fb{fill:var(--pn)}.edge .ff{fill:currentColor}.edge .ds{stroke-dasharray:6 5}
+.edge text{fill:currentColor;stroke:var(--pn);stroke-width:4;paint-order:stroke;font:11px 'Geist Mono',monospace}
+.card.ucase{border-radius:50%;display:grid;place-items:center;text-align:center;padding:4px 16px;overflow:hidden}
+.card.ucase div{line-height:1.2}.card.ucase small{display:block;font:11px 'Geist Mono',monospace;color:var(--mu)}.card.ucase b{font-weight:600;font-size:13.5px}.card.ucase b.ab,.card.uact b.ab{font-style:italic}
+.card.uact{background:none;border:0;border-radius:12px;overflow:visible;text-align:center}
+.card.uact svg{display:block;width:44px;height:70px;margin:0 auto;fill:none;stroke:var(--g);stroke-width:1.9;stroke-linecap:round}
+.card.uact small{display:block;font:11px 'Geist Mono',monospace;color:var(--mu);line-height:16px}.card.uact b{display:block;font-weight:600;font-size:13px;line-height:22px}
+.sys rect{fill:color-mix(in srgb,var(--pn) 55%,transparent);stroke:var(--eg);stroke-width:1.4}
+.sys text{fill:var(--mu);font:11px 'Geist Mono',monospace}.sys text.nm{fill:var(--tx);font:600 14px Geist,sans-serif}
+dialog{width:min(680px,92vw);background:var(--pn);color:var(--tx);border:1px solid var(--ln);border-radius:20px;padding:18px}dialog::backdrop{background:#000a}
+#out{width:100%;height:340px;margin-top:12px;background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:12px;font:12.5px 'Geist Mono',monospace;white-space:pre}
+body.viewer .hero,body.viewer .how,body.viewer .links,body.viewer .cta,body.viewer #bE,body.viewer #ed{display:none}body.viewer .panel,body.viewer #insp{height:calc(100vh - 190px)}
+body.present .nav,body.present .hero,body.present .how,body.present .crumb,body.present .wh,body.present #views,body.present #insp,body.present .tb,body.present #ed{display:none}
+body.present .grid{display:block;margin:0}body.present .panel{position:fixed;inset:0;z-index:50;height:auto;border-radius:0;border:0}
+@media(max-width:900px){.grid{grid-template-columns:1fr}#insp{height:auto;min-height:0;max-height:420px}#steps{grid-template-columns:1fr 1fr}.demo{grid-template-columns:1fr;height:auto}.dl{border-right:0;border-bottom:1px solid var(--ln)}#term,#pane{min-height:240px}.links a:not(:last-child){display:none}.cta{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style></head>
+<body>
+<header class="nav"><div class="navin">
+ <a class="pill logo" href="#top"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="10" height="9" rx="2"/><path d="M2 6h10"/><rect x="11" y="13" width="9" height="7" rx="2"/><path d="M7 11v2h4"/></svg>uml-designer</a>
+ <nav class="pill links"><a href="#how">How it works</a><a href="#ws">Workspace</a><a href="#ws" id="goEd">Editor</a><span class="vr"></span><button class="ic" id="bT" aria-label="Toggle theme"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></svg></button></nav>
+ <span class="sp"></span><a class="cta" href="#ws">Open workspace</a></div></header>
+<section class="hero" id="top"><div class="wrap">
+ <h1><span class="a">Every diagram of your code,</span><span class="a">on <em>one sheet.</em></span></h1>
+ <p>Interactive UML class and use-case diagrams from a small JSON, as one offline HTML file.</p>
+ <div class="row"><div class="cmd"><b>$</b><code>node bin/uml.mjs deliver diagram.json --open</code><button class="ic" id="cc" aria-label="Copy command"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg></button></div><a class="ghost" href="#how">How it works →</a></div>
+ <small>Works with Claude Code, Cursor, Codex and other coding agents.</small></div></section>
+<section class="how wrap rv" id="how">
+ <div class="eyebrow"><i></i>How it works</div>
+ <h2>Ask your agent.<br>One file comes back.</h2>
+ <p class="lede">The agent writes a small typed diagram.json. uml-designer checks it, lays it out and delivers a viewer you can open anywhere.</p>
+ <div class="stw"><div class="track"><i id="fill"></i></div><ol id="steps">
+  <li><small>01</small><h3>Ask.</h3><p>Ask your coding agent for a class or use-case diagram of a module, a domain or a whole codebase.</p></li>
+  <li><small>02</small><h3>It writes JSON.</h3><p>A small typed diagram.json: classes, or actors and use cases, plus relations and views. No coordinates.</p></li>
+  <li><small>03</small><h3>uml-designer checks it.</h3><p><code>validate</code> names each problem with a code and the allowed fixes. The agent repairs what is named.</p></li>
+  <li><small>04</small><h3>One file comes back.</h3><p><code>deliver</code> lays the diagram out and writes one self-contained HTML viewer.</p></li></ol></div>
+ <div class="demo"><div class="dl"><div class="dh">~/shop-app</div><div id="term"></div></div><div class="dr"><div class="dh"><span id="pname">diagram.json</span><span class="tag" id="ptag"></span></div><div id="pane"></div></div></div>
+</section>
+<section class="wrap rv" id="ws">
+ <div class="crumb">uml-designer › Diagram</div>
+ <div class="wh"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="10" height="8" rx="2"/><rect x="11" y="13" width="10" height="8" rx="2"/><path d="M8 11v2h3"/></svg></span><h2 id="ttl">Untitled</h2><span class="badge">UML</span><span id="meta"></span></div>
+ <nav id="views"></nav>
+ <div class="grid">
+  <div class="panel"><div id="stage"><div id="world"><svg id="svg"></svg><div id="cards"></div></div></div>
+   <div class="tb"><button class="ic" id="bS" title="Search (/)" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg></button><input id="q" placeholder="Search" aria-label="Search">
+    <button class="ic" id="bH" title="Hierarchy (H)" aria-label="Hierarchy"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M12 7v4M6 17v-3h12v3"/></svg></button>
+    <button class="ic" id="bE" title="Edit source (E)" aria-label="Edit source"><svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4"/></svg></button>
+    <button class="ic" id="bX" title="Export" aria-label="Export"><svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg></button>
+    <button class="ic" id="bF" title="Present (F)" aria-label="Present"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+   <div class="zm"><button class="ic" id="zo" aria-label="Zoom out"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><span id="zp">100%</span><button class="ic" id="zi" aria-label="Zoom in"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button><button class="ic" id="zf" aria-label="Fit to screen"><svg viewBox="0 0 24 24"><path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4"/></svg></button></div>
+   <aside id="ed"><div class="dh">diagram.json<span class="sp"></span><button class="ic" id="edx" aria-label="Close editor"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><textarea id="src" spellcheck="false" aria-label="Diagram JSON"></textarea><ul id="diag"></ul>
+    <div class="tools"><button id="aT">Add element</button><button id="aL">Auto-layout</button><button id="aR">Class example</button><button id="aU">Use-case example</button></div></aside>
+   <div id="pill"></div></div>
+  <aside id="insp"></aside>
+ </div>
+</section>
+<dialog id="dlg"><div style="display:flex;gap:8px;align-items:center"><button data-x="puml">PlantUML</button><button data-x="mmd">Mermaid</button><button data-x="json">JSON</button><span class="sp"></span><button id="cp">Copy</button><button id="cl">Close</button></div><textarea id="out" readonly aria-label="Export"></textarea></dialog>
+<script id="uml-data" type="application/json"></script>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/*core*/
+const KINDS=['class','abstract','interface','enum'];
+const RELS=['inherits','implements','composes','aggregates','associates','depends'];
+function check(o){const out=[],E=(code,message)=>out.push({code,message});
+ if(o&&o.type==='usecase')return checkUC(o);
+ if(o&&o.type&&o.type!=='class'){E('bad-diagram-type',`type "${o.type}" must be "class" or "usecase".`);return out}
+ if(!o||!Array.isArray(o.classes)||!o.classes.length){E('no-classes','Add a "classes" array with at least one class.');return out}
+ const ids=o.classes.map(c=>c&&c.id);
+ o.classes.forEach((c,i)=>{if(!c||!/^[A-Za-z_]\w*$/.test(c.id||''))return E('bad-id',`classes[${i}].id needs letters, digits and underscores, starting with a letter.`);
+  if(ids.indexOf(c.id)!==i)E('duplicate-class',`"${c.id}" is used twice. Rename one.`);
+  if(c.kind&&!KINDS.includes(c.kind))E('bad-kind',`${c.id}.kind "${c.kind}" must be one of: ${KINDS.join(', ')}.`);
+  ['attributes','methods'].forEach(k=>{if(c[k]!==undefined&&(!Array.isArray(c[k])||c[k].some(x=>typeof x!=='string')))E('bad-members',`${c.id}.${k} must be an array of strings like "- name: Type".`)})});
+ (o.relations||[]).forEach((r,i)=>{if(!RELS.includes(r.type))E('bad-type',`relations[${i}].type "${r.type}" must be one of: ${RELS.join(', ')}.`);
+  ['from','to'].forEach(k=>{if(!ids.includes(r[k]))E('unknown-class',`relations[${i}].${k} "${r[k]}" is not a class. Use one of: ${ids.join(', ')}.`)})});
+ (o.views||[]).forEach(v=>(v.classes||[]).forEach(id=>{if(!ids.includes(id))E('unknown-view-class',`View "${v.id}" lists "${id}", which is not a class.`)}));
+ return out}
+const UCRELS=['associates','include','extend','generalizes'];
+function checkUC(o){const out=[],E=(code,message)=>out.push({code,message}),A=o.actors,U=o.usecases;
+ if(!Array.isArray(A)||!A.length)E('no-actors','Add an "actors" array with at least one actor.');
+ if(!Array.isArray(U)||!U.length)E('no-usecases','Add a "usecases" array with at least one use case.');
+ if(out.length)return out;
+ const kind={};
+ [['actors',A,'actor'],['usecases',U,'usecase']].forEach(([k,l,t])=>l.forEach((n,i)=>{
+  if(!n||!/^[A-Za-z_]\w*$/.test(n.id||''))return E('bad-id',`${k}[${i}].id needs letters, digits and underscores, starting with a letter.`);
+  if(kind[n.id])E('duplicate-id',`"${n.id}" is used twice. Rename one.`);kind[n.id]=t;
+  if(t==='actor'&&n.side!==undefined&&!['left','right'].includes(n.side))E('bad-side',`${n.id}.side "${n.side}" must be "left" or "right".`)}));
+ const ids=Object.keys(kind);
+ (o.relations||[]).forEach((r,i)=>{let ok=true;
+  if(!r||!UCRELS.includes(r.type)){ok=false;E('bad-type',`relations[${i}].type "${r&&r.type}" must be one of: ${UCRELS.join(', ')}.`)}
+  ['from','to'].forEach(k=>{if(!r||!kind[r[k]]){ok=false;E('unknown-node',`relations[${i}].${k} "${r&&r[k]}" is not an actor or use case. Use one of: ${ids.join(', ')}.`)}});
+  if(!ok)return;
+  const a=kind[r.from],b=kind[r.to];
+  if(r.from===r.to)return E('self-relation',`relations[${i}] connects "${r.from}" to itself.`);
+  if(r.type==='associates'&&!(a==='actor'&&b==='usecase'))E('bad-link',`relations[${i}]: "associates" goes from an actor to a use case ("${r.from}" is a ${a}, "${r.to}" is a ${b}).`);
+  if((r.type==='include'||r.type==='extend')&&!(a==='usecase'&&b==='usecase'))E('bad-link',`relations[${i}]: "${r.type}" connects two use cases.`);
+  if(r.type==='generalizes'&&a!==b)E('bad-link',`relations[${i}]: "generalizes" connects two actors or two use cases, not an actor and a use case.`)});
+ (o.views||[]).forEach(v=>(v.nodes||v.classes||[]).forEach(id=>{if(!kind[id])E('unknown-view-node',`View "${v.id}" lists "${id}", which is not an actor or use case.`)}));
+ return out}
+function plantumlUC(o){const q=s=>'"'+String(s).replace(/"/g,"'")+'"',AR={associates:'--',include:'.>',extend:'.>',generalizes:'--|>'};
+ let s='@startuml\nleft to right direction\n';
+ (o.actors||[]).forEach(a=>{s+=`actor ${q(a.label||a.id)} as ${a.id}\n`});
+ s+=`rectangle ${q(o.system||o.title||'System')} {\n`;(o.usecases||[]).forEach(u=>{s+=`  usecase ${q(u.label||u.id)} as ${u.id}\n`});s+='}\n';
+ (o.relations||[]).forEach(r=>{const t=r.type==='include'||r.type==='extend'?` : <<${r.type}>>`:r.label?' : '+r.label:'';s+=`${r.from} ${AR[r.type]} ${r.to}${t}\n`});
+ return s+'@enduml'}
+function mermaidUC(o){const q=s=>'"'+String(s).replace(/"/g,"'")+'"';let s='flowchart LR\n';
+ (o.actors||[]).forEach(a=>{s+=`  ${a.id}[${q('«actor» '+(a.label||a.id))}]\n`});
+ s+=`  subgraph sys[${q(o.system||o.title||'System')}]\n`;(o.usecases||[]).forEach(u=>{s+=`    ${u.id}([${q(u.label||u.id)}])\n`});s+='  end\n';
+ (o.relations||[]).forEach(r=>{const t=r.type==='include'||r.type==='extend'?`-.->|${q('«'+r.type+'»')}|`:r.type==='generalizes'?`-->|${q('generalizes')}|`:'---';s+=`  ${r.from} ${t} ${r.to}\n`});
+ return s}
+function plantuml(o){if(o.type==='usecase')return plantumlUC(o);const AR={inherits:'--|>',implements:'..|>',composes:'*--',aggregates:'o--',associates:'-->',depends:'..>'};
+ const kw=c=>c.kind==='abstract'?'abstract class':c.kind||'class',body=c=>[...(c.attributes||[]),...(c.methods||[])].map(m=>'  '+m).join('\n');
+ const pk={};o.classes.forEach(c=>(pk[c.package||'']??=[]).push(c));let s='@startuml\nskinparam classAttributeIconSize 0\n';
+ Object.entries(pk).forEach(([p,cs])=>{const g=(o.packages||[]).find(x=>x.id===p),inner=cs.map(c=>`${kw(c)} ${c.id} {\n${body(c)}\n}`).join('\n');s+=p?`package "${g&&g.label||p}" {\n${inner}\n}\n`:inner+'\n'});
+ (o.relations||[]).forEach(r=>{s+=`${r.from}${r.fromMult?` "${r.fromMult}"`:''} ${AR[r.type]}${r.toMult?` "${r.toMult}"`:''} ${r.to}${r.label?' : '+r.label:''}\n`});
+ return s+'@enduml'}
+function mermaid(o){if(o.type==='usecase')return mermaidUC(o);const AR={inherits:'<|--',implements:'<|..',composes:'*--',aggregates:'o--',associates:'-->',depends:'..>'},st={abstract:'abstract',interface:'interface',enum:'enumeration'};
+ let s='classDiagram\n';const mem=m=>'    '+m.replace(/^([+\-#~])\s+/,'$1');
+ o.classes.forEach(c=>{s+=`  class ${c.id} {\n${st[c.kind]?`    <<${st[c.kind]}>>\n`:''}${[...(c.attributes||[]),...(c.methods||[])].map(mem).join('\n')}\n  }\n`});
+ (o.relations||[]).forEach(r=>{const inv=r.type==='inherits'||r.type==='implements',l=inv?r.to:r.from,rr=inv?r.from:r.to,lm=inv?'':r.fromMult,rm=inv?'':r.toMult;
+  s+=`  ${l}${lm?` "${lm}"`:''} ${AR[r.type]}${rm?` "${rm}"`:''} ${rr}${r.label?' : '+r.label:''}\n`});
+ return s}
+/*end-core*/
+const LH=18,PAD=8,PAL=['#2f80d1','#2da58a','#d98a1f','#9a62d6','#d4546a','#7f93aa'];
+const SAMPLE={title:"Library system",packages:[{id:"domain",label:"Domain"},{id:"services",label:"Services"},{id:"infra",label:"Infrastructure"}],classes:[
+{id:"Item",kind:"abstract",package:"domain",attributes:["- id: UUID","- title: string"],methods:["+ available(): boolean","+ loanDays(): int"]},
+{id:"Book",package:"domain",attributes:["- isbn: string","- pages: int"],methods:["+ loanDays(): int"]},
+{id:"Dvd",package:"domain",attributes:["- minutes: int"],methods:["+ loanDays(): int"]},
+{id:"Member",package:"domain",attributes:["- name: string","- email: string"],methods:["+ canBorrow(): boolean"]},
+{id:"Loan",package:"domain",attributes:["- dueOn: Date","- returnedOn: Date"],methods:["+ isOverdue(): boolean"]},
+{id:"LoanStatus",kind:"enum",package:"domain",attributes:["ACTIVE","RETURNED","OVERDUE"]},
+{id:"Notifier",kind:"interface",package:"services",methods:["+ send(to: Member, msg: string)"]},
+{id:"LoanService",package:"services",attributes:["- loans: LoanRepo"],methods:["+ checkout(m: Member, i: Item): Loan","+ giveBack(l: Loan)"]},
+{id:"EmailNotifier",package:"infra",attributes:["- smtpHost: string"],methods:["+ send(to: Member, msg: string)"]}],
+relations:[{from:"Book",to:"Item",type:"inherits"},{from:"Dvd",to:"Item",type:"inherits"},{from:"EmailNotifier",to:"Notifier",type:"implements"},
+{from:"Member",to:"Loan",type:"aggregates",fromMult:"1",toMult:"0..*",label:"borrows"},{from:"Loan",to:"Item",type:"associates",fromMult:"*",toMult:"1",label:"of"},
+{from:"Loan",to:"LoanStatus",type:"associates"},{from:"LoanService",to:"Loan",type:"composes",toMult:"*",label:"manages"},{from:"LoanService",to:"Notifier",type:"depends",label:"notifies"}],
+views:[{id:"lending",label:"Lending",classes:["Member","Loan","Item","LoanService","Notifier"]},{id:"inheritance",label:"Item hierarchy",classes:["Item","Book","Dvd"]}]};
+const SAMPLE_UC={type:"usecase",title:"Online shopping",system:"Online Shopping",stereotype:"subsystem",
+actors:[{id:"WebCustomer",label:"Web Customer",abstract:true},{id:"Registered",label:"Registered Customer"},{id:"NewCustomer",label:"New Customer"},
+{id:"Auth",label:"Authentication",stereotype:"service",side:"right"},{id:"IdP",label:"Identity Provider",side:"right"},{id:"Card",label:"Credit Payment Service",side:"right"},{id:"PayPal",label:"PayPal",side:"right"}],
+usecases:[{id:"ViewItems",label:"View Items"},{id:"MakePurchase",label:"Make Purchase",abstract:true},{id:"Checkout",label:"Checkout"},{id:"ClientRegister",label:"Client Register"}],
+relations:[{from:"Registered",to:"WebCustomer",type:"generalizes"},{from:"NewCustomer",to:"WebCustomer",type:"generalizes"},
+{from:"Registered",to:"ViewItems",type:"associates"},{from:"Registered",to:"MakePurchase",type:"associates"},{from:"NewCustomer",to:"ViewItems",type:"associates"},{from:"NewCustomer",to:"ClientRegister",type:"associates"},
+{from:"MakePurchase",to:"ViewItems",type:"include"},{from:"MakePurchase",to:"Checkout",type:"include"},
+{from:"Auth",to:"ViewItems",type:"associates"},{from:"Auth",to:"Checkout",type:"associates"},{from:"Auth",to:"ClientRegister",type:"associates"},
+{from:"IdP",to:"ViewItems",type:"associates"},{from:"IdP",to:"Checkout",type:"associates"},{from:"Card",to:"Checkout",type:"associates"},{from:"PayPal",to:"Checkout",type:"associates"}],
+views:[{id:"purchase",label:"Purchase flow",nodes:["Registered","WebCustomer","MakePurchase","ViewItems","Checkout","Auth","IdP","Card","PayPal"]},{id:"signup",label:"Registration",nodes:["NewCustomer","WebCustomer","ClientRegister","ViewItems","Auth"]}]};
+const fmt=o=>JSON.stringify(o,null,2).replace(/\{[^{}]*\}/g,m=>{const c=m.replace(/\s*\n\s*/g,' ');return c.length<110?c:m});
+let anim=true;
+let D,R=[],cm={},pos={},sz={},manual={},cardEl={},edgeEl={},sel=null,hier=false,view=null,hidden=new Set(),cam={x:40,y:40,k:1};
+const st=$('#stage'),world=$('#world'),svg=$('#svg'),cards=$('#cards'),src=$('#src');
+const pcol=id=>{const i=(D.packages||[]).findIndex(g=>g.id===id);return i<0?'#7f93aa':(D.packages[i].color||PAL[i%PAL.length])};
+const save=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},load=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const vis=s=>/^[+\-#~]/.test(s)?[s[0],s.slice(1).trim()]:['',s];
+const stereo=c=>c.stereotype?'«'+c.stereotype+'»':c.kind==='interface'?'«interface»':c.kind==='enum'?'«enumeration»':c.kind==='abstract'?'«abstract»':'';
+const mem=a=>a.map(x=>{const[v,t]=vis(x);return`<div class="m"><i>${esc(v)}</i>${esc(t)}</div>`}).join('');
+
+let sysEl=null;
+const normUC=o=>({...o,_uc:1,_src:o,packages:[{id:'actor',label:'Actors',color:'#2f80d1'},{id:'usecase',label:'Use cases',color:'#d98a1f'}],
+ classes:[...(o.actors||[]).map(a=>({...a,kind:'actor',package:'actor'})),...(o.usecases||[]).map(u=>({...u,kind:'usecase',package:'usecase'}))],
+ views:(o.views||[]).map(v=>({...v,classes:v.nodes||v.classes||[]}))});
+const ucSize=c=>c.kind==='usecase'?{w:Math.max(130,Math.round((c.label||c.id).length*7.8+48)),h:c.stereotype?70:58}
+ :{w:Math.max(84,Math.round(Math.max((c.label||c.id).length,c.stereotype?c.stereotype.length+2:0)*7.4+22)),h:70+(c.stereotype?16:0)+24};
+const ucHTML=c=>{const nm=`<b class="${c.abstract?'ab':''}">${esc(c.label||c.id)}</b>`,sv=c.stereotype?`<small>«${esc(c.stereotype)}»</small>`:'';
+ return c.kind==='actor'?`<svg viewBox="0 0 44 70"><circle cx="22" cy="12" r="9"/><path d="M22 21V46M6 30H38M22 46L8 68M22 46L36 68"/></svg>${sv}${nm}`:`<div>${sv}${nm}</div>`};
+const geo=id=>{const p=pos[id],s=sz[id];return cm[id].kind==='actor'?{x:p.x+s.w/2,y:p.y+35,a:24,b:35,r:1}:{x:p.x+s.w/2,y:p.y+s.h/2,a:s.w/2,b:s.h/2,r:0}};
+const hit=(g,t)=>{const dx=t.x-g.x,dy=t.y-g.y;if(!dx&&!dy)return{x:g.x,y:g.y};const k=g.r?1/Math.max(Math.abs(dx)/g.a,Math.abs(dy)/g.b):1/Math.hypot(dx/g.a,dy/g.b);return{x:g.x+dx*k,y:g.y+dy*k}};
+function ucBox(){const u=D.classes.filter(c=>c.kind==='usecase');if(!u.length)return null;let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+ u.forEach(c=>{const p=pos[c.id],s=sz[c.id];x0=Math.min(x0,p.x);y0=Math.min(y0,p.y);x1=Math.max(x1,p.x+s.w);y1=Math.max(y1,p.y+s.h)});
+ return{x:x0-34,y:y0-62,w:Math.max(x1-x0+68,(D.system||D.title||'System').length*9+56),h:y1-y0+92}}
+function layoutUC(){const N=D.classes,A=N.filter(c=>c.kind==='actor'),U=N.filter(c=>c.kind==='usecase'),GA=60,GY=40,ctr=id=>pos[id].y+sz[id].h/2;
+ N.forEach(c=>pos[c.id]={x:0,y:0});
+ const par={};A.forEach(a=>par[a.id]=[]);R.forEach(r=>{if(r.type==='generalizes'&&par[r.from]&&par[r.to])par[r.from].push(r.to)});
+ const dd={},vs={},dp=i=>{if(dd[i]!=null)return dd[i];if(vs[i])return 0;vs[i]=1;let d=0;par[i].forEach(p=>d=Math.max(d,dp(p)+1));vs[i]=0;return dd[i]=d};A.forEach(a=>dp(a.id));
+ const side=a=>a.side==='right'?'right':'left',cw=l=>Math.max(0,...l.map(a=>sz[a.id].w));
+ const spread=(l,key,gap)=>{l.sort((p,q)=>key(p)-key(q));let y=-1e9;l.forEach(c=>{const t=Math.max(key(c)-sz[c.id].h/2,y);pos[c.id].y=t;y=t+sz[c.id].h+gap})};
+ const Ls=A.filter(a=>side(a)==='left'),Rs=A.filter(a=>side(a)==='right'),lmax=Math.max(-1,...Ls.map(a=>dd[a.id])),rmax=Math.max(-1,...Rs.map(a=>dd[a.id])),lc=[];let x=0;
+ for(let d=0;d<=lmax;d++){const w=cw(Ls.filter(a=>dd[a.id]===d));lc[d]={x,w};x+=w+GA}
+ const ux0=(lmax>=0?x+30:0)+34,ext=new Set(R.filter(r=>r.type==='extend').map(r=>r.from));
+ U.forEach(u=>u._c=u.col!=null?+u.col:ext.has(u.id)?1:0);
+ const nc=Math.max(0,...U.map(u=>u._c))+1,cols=[];let ux=ux0;
+ for(let c=0;c<nc;c++){const l=U.filter(u=>u._c===c),w=cw(l);cols.push({l,x:ux,w});l.forEach(u=>pos[u.id].x=ux+(w-sz[u.id].w)/2);ux+=w+64}
+ let y=0;(cols[0]?cols[0].l:[]).forEach(u=>{pos[u.id].y=y;u._done=1;y+=sz[u.id].h+GY});
+ for(let c=1;c<nc;c++){const key=u=>{const t=R.filter(r=>(r.from===u.id||r.to===u.id)&&(r.type==='extend'||r.type==='include')).map(r=>r.from===u.id?r.to:r.from).filter(i=>cm[i]._done);return t.length?t.reduce((s,i)=>s+ctr(i),0)/t.length:0};
+  spread(cols[c].l,key,GY);cols[c].l.forEach(u=>u._done=1)}
+ const bx=ucBox(),allc=U.length?U.reduce((s,u)=>s+ctr(u.id),0)/U.length:0,rc=[];let rx=bx.x+bx.w+90;
+ for(let d=rmax;d>=0;d--){const w=cw(Rs.filter(a=>dd[a.id]===d));rc[d]={x:rx,w};rx+=w+GA}
+ A.forEach(a=>{const c=(side(a)==='left'?lc:rc)[dd[a.id]];pos[a.id].x=c.x+(c.w-sz[a.id].w)/2});
+ for(let d=Math.max(lmax,rmax);d>=0;d--)['left','right'].forEach(sd=>{const l=A.filter(a=>side(a)===sd&&dd[a.id]===d);if(!l.length)return;
+  const key=a=>{const t=R.filter(r=>(r.from===a.id||r.to===a.id)&&(r.type==='associates'||r.type==='generalizes')).map(r=>r.from===a.id?r.to:r.from).filter(i=>cm[i]._done);return t.length?t.reduce((s,i)=>s+ctr(i),0)/t.length:allc};
+  spread(l,key,28);l.forEach(a=>a._done=1)});
+ Object.keys(manual).forEach(id=>{if(pos[id])pos[id]={...manual[id]}})}
+function edgesUC(){const b=ucBox();
+ if(b&&sysEl)sysEl.innerHTML=`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="8"/>${D.stereotype===''?'':`<text x="${b.x+16}" y="${b.y+22}">«${esc(D.stereotype||'subsystem')}»</text>`}<text class="nm" x="${b.x+16}" y="${b.y+42}">${esc(D.system||D.title||'System')}</text>`;
+ R.forEach(r=>{const g=edgeEl[r.id];if(!pos[r.from]||!pos[r.to])return;
+  const a=hit(geo(r.from),geo(r.to)),e=hit(geo(r.to),geo(r.from)),l=Math.hypot(e.x-a.x,e.y-a.y)||1,u={x:(e.x-a.x)/l,y:(e.y-a.y)/l},n={x:-u.y,y:u.x},
+  P=(p,k,m)=>`${(p.x+u.x*k+n.x*m).toFixed(1)},${(p.y+u.y*k+n.y*m).toFixed(1)}`,dep=r.type==='include'||r.type==='extend';
+  let h=`<path class="ln${dep?' ds':''}" d="M${a.x.toFixed(1)},${a.y.toFixed(1)}L${e.x.toFixed(1)},${e.y.toFixed(1)}"/>`;
+  if(dep)h+=`<path d="M${P(e,-11,5.5)}L${P(e,0,0)}L${P(e,-11,-5.5)}"/>`;
+  else if(r.type==='generalizes')h+=`<polygon class="fb" points="${P(e,0,0)} ${P(e,-14,7)} ${P(e,-14,-7)}"/>`;
+  const lb=dep?'«'+r.type+'»':r.label;
+  if(lb){const q=P({x:(a.x+e.x)/2,y:(a.y+e.y)/2},0,-10).split(',');h+=`<text x="${q[0]}" y="${+q[1]+4}" text-anchor="middle">${esc(lb)}</text>`}
+  g.innerHTML=`<title>${esc(cm[r.from].label||r.from)} ${esc(r.type)} ${esc(cm[r.to].label||r.to)}</title>`+h})}
+
+function build(o){D=o.type==='usecase'?normUC(o):o;cm={};D.classes.forEach(c=>cm[c.id]=c);R=(D.relations||[]).map((r,i)=>({...r,id:'r'+i}));sz={};
+ D.classes.forEach(c=>{if(D._uc){sz[c.id]=ucSize(c);return}const a=c.attributes||[],m=c.methods||[],mx=Math.max(c.id.length*1.2,...a.concat(m).map(x=>x.length));
+  const ha=a.length?a.length*LH+PAD:12,hm=c.kind==='enum'?0:(m.length?m.length*LH+PAD:12),hh=stereo(c)?44:32;
+  sz[c.id]={w:Math.max(150,Math.round(mx*7.3+30)),h:hh+ha+hm,ha,hm,hh}});D._uc?layoutUC():layout()}
+function layout(){const ids=D.classes.map(c=>c.id),ups={};ids.forEach(i=>ups[i]=[]);
+ R.forEach(r=>{if(r.from===r.to)return;const inh=r.type==='inherits'||r.type==='implements';ups[inh?r.from:r.to].push(inh?r.to:r.from)});
+ const depth={},vs={};const dep=i=>{if(depth[i]!=null)return depth[i];if(vs[i])return 0;vs[i]=1;let d=0;ups[i].forEach(p=>d=Math.max(d,dep(p)+1));vs[i]=0;return depth[i]=d};ids.forEach(dep);
+ const L=[];D.classes.forEach(c=>(L[depth[c.id]]??=[]).push(c));const cx={},GX=56,GY=96;
+ const stack=()=>{let y=0;L.forEach(l=>{let x=0,mh=0;l.forEach(c=>{pos[c.id]={x,y};cx[c.id]=x+sz[c.id].w/2;x+=sz[c.id].w+GX;mh=Math.max(mh,sz[c.id].h)});l.rw=x-GX;y+=mh+GY})};
+ stack();
+ for(let it=0;it<3;it++){L.forEach(l=>{const key=c=>{const n=R.filter(r=>r.from!==r.to&&(r.from===c.id||r.to===c.id)).map(r=>cx[r.from===c.id?r.to:r.from]);return n.length?n.reduce((a,b)=>a+b,0)/n.length:cx[c.id]};const k=new Map(l.map(c=>[c.id,key(c)]));l.sort((a,b)=>k.get(a.id)-k.get(b.id))});stack()}
+ const mx=Math.max(...L.map(l=>l.rw));L.forEach(l=>l.forEach(c=>pos[c.id].x+=(mx-l.rw)/2));
+ Object.keys(manual).forEach(id=>{if(pos[id])pos[id]={...manual[id]}})}
+
+function render(){cards.innerHTML='';svg.innerHTML='';cardEl={};edgeEl={};sysEl=null;
+ if(D._uc){sysEl=document.createElementNS('http://www.w3.org/2000/svg','g');sysEl.setAttribute('class','sys');svg.appendChild(sysEl)}
+ R.forEach(r=>{const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','edge');svg.appendChild(g);edgeEl[r.id]=g});
+ D.classes.forEach((c,i)=>{const s=sz[c.id],el=document.createElement('div');el.className='card';el.dataset.id=c.id;el.style.width=s.w+'px';el.style.setProperty('--g',pcol(c.package));
+  if(D._uc){el.classList.add(c.kind==='actor'?'uact':'ucase');el.style.height=s.h+'px'}
+  el.innerHTML=D._uc?ucHTML(c):`<header style="--g:${pcol(c.package)};height:${s.hh}px"><small>${stereo(c)}</small><b class="${c.kind==='abstract'?'ab':''}">${esc(c.id)}</b></header><div class="cp" style="height:${s.ha}px">${mem(c.attributes||[])}</div>${s.hm?`<div class="cp" style="height:${s.hm}px">${mem(c.methods||[])}</div>`:''}`;
+  if(anim){el.classList.add('enter');el.style.animationDelay=(i*70)+'ms'}cards.appendChild(el);cardEl[c.id]=el;place(c.id)});
+ edges();if(anim){R.forEach(r=>edgeEl[r.id].classList.add('enter'));anim=false}$('#ttl').textContent=D.title||'Untitled';$('#meta').textContent=D._uc?D.classes.filter(c=>c.kind==='actor').length+' actors · '+D.classes.filter(c=>c.kind==='usecase').length+' use cases · '+R.length+' relations':D.classes.length+' classes · '+R.length+' relations';
+ $('#views').innerHTML=`<button data-v="" class="${view?'':'on'}">All</button>`+(D.views||[]).map(v=>`<button data-v="${esc(v.id)}" class="${view&&view.id===v.id?'on':''}">${esc(v.label||v.id)}</button>`).join('');
+ if(sel&&!cm[sel])sel=null;paint();side()}
+const place=id=>{cardEl[id].style.left=pos[id].x+'px';cardEl[id].style.top=pos[id].y+'px'};
+function anchor(a,b){const A=pos[a],B=pos[b],ca={x:A.x+sz[a].w/2,y:A.y+sz[a].h/2},cb={x:B.x+sz[b].w/2,y:B.y+sz[b].h/2},dx=cb.x-ca.x,dy=cb.y-ca.y;
+ const s=Math.min(dx?sz[a].w/2/Math.abs(dx):1e9,dy?sz[a].h/2/Math.abs(dy):1e9);return{x:ca.x+dx*s,y:ca.y+dy*s}}
+function edges(){if(D._uc)return edgesUC();R.forEach(r=>{const g=edgeEl[r.id],A=pos[r.from];if(!A||!pos[r.to])return;let a,b,u,h='';const ds=r.type==='implements'||r.type==='depends'?' ds':'';
+ if(r.from===r.to){const s=sz[r.from];a={x:A.x+s.w,y:A.y+14};b={x:A.x+s.w-34,y:A.y};u={x:0,y:1};h=`<path class="ln${ds}" d="M${a.x},${a.y}h38v-30h-72V${A.y}"/>`}
+ else{a=anchor(r.from,r.to);b=anchor(r.to,r.from);const l=Math.hypot(b.x-a.x,b.y-a.y)||1;u={x:(b.x-a.x)/l,y:(b.y-a.y)/l};h=`<path class="ln${ds}" d="M${a.x},${a.y}L${b.x},${b.y}"/>`}
+ const n={x:-u.y,y:u.x},P=(p,k,m)=>`${(p.x+u.x*k+n.x*m).toFixed(1)},${(p.y+u.y*k+n.y*m).toFixed(1)}`,T=(p,k,m,t)=>{const q=P(p,k,m).split(',');return`<text x="${q[0]}" y="${+q[1]+4}" text-anchor="middle">${esc(t)}</text>`};
+ if(r.type==='inherits'||r.type==='implements')h+=`<polygon class="fb" points="${P(b,0,0)} ${P(b,-14,7)} ${P(b,-14,-7)}"/>`;
+ else if(r.type==='associates'||r.type==='depends')h+=`<path d="M${P(b,-11,5.5)}L${P(b,0,0)}L${P(b,-11,-5.5)}"/>`;
+ if(r.from!==r.to&&(r.type==='composes'||r.type==='aggregates'))h+=`<polygon class="${r.type==='composes'?'ff':'fb'}" points="${P(a,0,0)} ${P(a,9,5)} ${P(a,18,0)} ${P(a,9,-5)}"/>`;
+ if(r.from!==r.to){if(r.fromMult)h+=T(a,26,14,r.fromMult);if(r.toMult)h+=T(b,-26,14,r.toMult);if(r.label)h+=T({x:(a.x+b.x)/2,y:(a.y+b.y)/2},0,-10,r.label)}
+ else if(r.label)h+=`<text x="${a.x+40}" y="${A.y-20}">${esc(r.label)}</text>`;
+ g.innerHTML=`<title>${esc(r.from)} ${esc(r.type)} ${esc(r.to)}</title>`+h})}
+
+function act(){if(!sel)return null;const n=new Set([sel]),ed=new Set();
+ if(hier){const H=r=>r.type==='inherits'||r.type==='implements'||r.type==='generalizes',walk=up=>{const s=[sel],seen=new Set([sel]);while(s.length){const u=s.pop();R.forEach(r=>{if(!H(r))return;const a=up?r.from:r.to,b=up?r.to:r.from;if(a===u){ed.add(r.id);n.add(b);if(!seen.has(b)){seen.add(b);s.push(b)}}})}};walk(1);walk(0)}
+ else R.forEach(r=>{if(r.from===sel||r.to===sel){ed.add(r.id);n.add(r.from);n.add(r.to)}});return{n,e:ed}}
+function paint(){const A=act(),q=$('#q').value.trim().toLowerCase(),vs=view?new Set(view.classes):null;
+ D.classes.forEach(c=>{let ok=true;if(vs&&!vs.has(c.id))ok=false;if(hidden.has(c.package||''))ok=false;if(A&&!A.n.has(c.id))ok=false;
+  if(q&&!(c.id.toLowerCase().includes(q)||(c.label||'').toLowerCase().includes(q)||[...(c.attributes||[]),...(c.methods||[])].some(x=>x.toLowerCase().includes(q))))ok=false;
+  cardEl[c.id].classList.toggle('dim',!ok);cardEl[c.id].classList.toggle('sel',c.id===sel)});
+ R.forEach(r=>{const g=edgeEl[r.id],ok=!cardEl[r.from].classList.contains('dim')&&!cardEl[r.to].classList.contains('dim');g.classList.toggle('dim',!ok||(A&&!A.e.has(r.id)));g.classList.toggle('on',!!A&&A.e.has(r.id))});
+ $('#bH').classList.toggle('on',hier)}
+const pill=m=>{const p=$('#pill');p.textContent=m||'';p.style.display=m?'block':'none'};
+function side(){const el=$('#insp');
+ if(sel){const c=cm[sel],rs=R.filter(r=>r.from===sel||r.to===sel),ul=(t,a)=>a&&a.length?`<p class="h4">${t}</p><ul>${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'';
+  el.innerHTML=`<a class="back" id="back">← Diagram</a><p class="lab">${esc(c.kind||'class')}${c.package&&!D._uc?' · '+esc(c.package):''}</p><h3>${esc(c.label||c.id)}</h3>${c.note?`<p class="mu">${esc(c.note)}</p>`:''}<button id="bHi" class="${hier?'on':''}">Hierarchy</button>`+ul('Attributes',c.attributes)+ul('Methods',c.methods)+
+  `<p class="h4">Relations</p><ul>${rs.map(r=>{const o=r.from===sel?r.to:r.from;return`<li>${r.from===sel?'':'← '}${esc(r.type)} <a data-go="${esc(o)}">${esc(cm[o].label||o)}</a>${r.label?' <span class="mu">'+esc(r.label)+'</span>':''}</li>`}).join('')||'<li class="mu">none</li>'}</ul>`;return}
+ const gs=[...(D.packages||[]),{id:'',label:'No package'}].filter(g=>D.classes.some(c=>(c.package||'')===g.id));
+ el.innerHTML=`<p class="lab">Diagram</p><h3>${esc(D.title||'Untitled')}</h3><p class="mu">${esc(D.description||(D._uc?'UML use-case diagram':'UML class diagram'))}</p><p class="h4">Legend</p>`+
+  gs.map(g=>`<div class="lg ${hidden.has(g.id)?'off':''}" data-g="${esc(g.id)}" title="Show or hide this package"><span class="dot" style="--g:${pcol(g.id)}"></span>${esc(g.label||g.id)}<b>${D.classes.filter(c=>(c.package||'')===g.id).length}</b></div>`).join('')+
+  `<p class="h4">${D._uc?'Elements':'Classes'}</p>`+D.classes.map(c=>`<div class="it" data-go="${esc(c.id)}"><i>${{interface:'I',enum:'E',abstract:'A',actor:'A',usecase:'U'}[c.kind]||'C'}</i>${esc(c.label||c.id)}</div>`).join('')+`<p class="hint">Select an element to see its details. Press <kbd>/</kbd> to search. Ctrl or ⌘ + scroll to zoom.</p>`}
+function pick(id,center){sel=id;if(!id)hier=false;try{history.replaceState(null,'',sel?'#c-'+sel:location.pathname+location.search)}catch(e){}
+ if(id&&center){const r=st.getBoundingClientRect(),p=pos[id],s=sz[id];cam.x=r.width/2-(p.x+s.w/2)*cam.k;cam.y=r.height/2-(p.y+s.h/2)*cam.k;applyCam()}paint();side()}
+
+const applyCam=()=>{world.style.transform=`translate(${cam.x}px,${cam.y}px) scale(${cam.k})`;st.style.backgroundPosition=`${cam.x}px ${cam.y}px`;st.style.backgroundSize=`${24*cam.k}px ${24*cam.k}px`;$('#zp').textContent=Math.round(cam.k*100)+'%'};
+function fit(ids){const l=(ids&&ids.length?ids:D.classes.map(c=>c.id)).filter(i=>pos[i]);if(!l.length)return;let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+ l.forEach(i=>{const p=pos[i];x0=Math.min(x0,p.x);y0=Math.min(y0,p.y);x1=Math.max(x1,p.x+sz[i].w);y1=Math.max(y1,p.y+sz[i].h)});
+ if(D._uc&&!(ids&&ids.length)){const b=ucBox();if(b){x0=Math.min(x0,b.x);y0=Math.min(y0,b.y);x1=Math.max(x1,b.x+b.w);y1=Math.max(y1,b.y+b.h)}}
+ const r=st.getBoundingClientRect(),k=Math.min(1.1,(r.width-100)/(x1-x0),(r.height-160)/(y1-y0));cam.k=Math.max(.2,k||1);cam.x=(r.width-(x1-x0)*cam.k)/2-x0*cam.k;cam.y=(r.height-(y1-y0)*cam.k)/2-y0*cam.k-20;applyCam()}
+const zoom=f=>{const r=st.getBoundingClientRect(),mx=r.width/2,my=r.height/2,k=Math.min(2,Math.max(.2,cam.k*f));cam.x=mx-(mx-cam.x)*k/cam.k;cam.y=my-(my-cam.y)*k/cam.k;cam.k=k;applyCam()};
+let drag=null;
+st.addEventListener('pointerdown',e=>{const c=e.target.closest('.card'),id=c&&c.dataset.id;drag={c:id,x:e.clientX,y:e.clientY,mv:false,ox:id?pos[id].x:cam.x,oy:id?pos[id].y:cam.y};try{st.setPointerCapture(e.pointerId)}catch(_){}});
+st.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>3)drag.mv=true;if(!drag.mv)return;
+ if(drag.c){const p=pos[drag.c];p.x=drag.ox+dx/cam.k;p.y=drag.oy+dy/cam.k;manual[drag.c]={x:p.x,y:p.y};place(drag.c);edges()}else{cam.x=drag.ox+dx;cam.y=drag.oy+dy;applyCam()}});
+st.addEventListener('pointerup',()=>{if(drag&&!drag.mv)pick(drag.c||null);drag=null});
+st.addEventListener('wheel',e=>{if(!(e.ctrlKey||e.metaKey))return;e.preventDefault();const r=st.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,k=Math.min(2,Math.max(.2,cam.k*Math.exp(-e.deltaY*.0015)));cam.x=mx-(mx-cam.x)*k/cam.k;cam.y=my-(my-cam.y)*k/cam.k;cam.k=k;applyCam()},{passive:false});
+$('#zi').onclick=()=>zoom(1.2);$('#zo').onclick=()=>zoom(1/1.2);$('#zf').onclick=()=>fit(view&&view.classes);
+
+function apply(text,refit){const ul=$('#diag');let o;try{o=JSON.parse(text)}catch(e){ul.innerHTML=`<li>invalid-json: ${esc(e.message)}. Fix the syntax near the reported position.</li>`;return}
+ const errs=check(o);if(errs.length){ul.innerHTML=errs.map(e=>`<li>${esc(e.code)}: ${esc(e.message)}</li>`).join('');return}
+ ul.innerHTML='<li class="ok">Diagram is valid.</li>';save('uml:src',text);build(o);if(view)view=(D.views||[]).find(v=>v.id===view.id)||null;render();if(refit)fit()}
+let tmr;src.addEventListener('input',()=>{clearTimeout(tmr);tmr=setTimeout(()=>apply(src.value,false),250)});
+function edit(fn){let o;try{o=JSON.parse(src.value)}catch(e){return}if(check(o).length)return;fn(o);src.value=fmt(o);apply(src.value,false)}
+$('#aT').onclick=()=>edit(o=>{if(o.type==='usecase'){let k=1;while(o.usecases.some(c=>c.id==='NewUseCase'+k))k++;o.usecases.push({id:'NewUseCase'+k,label:'New use case'});return}let n=1;while(o.classes.some(c=>c.id==='NewClass'+n))n++;o.classes.push({id:'NewClass'+n,attributes:['- id: int'],methods:['+ run(): void']})});
+$('#aL').onclick=()=>{manual={};(D._uc?layoutUC:layout)();anim=true;render();fit()};
+$('#aR').onclick=()=>{manual={};anim=true;src.value=fmt(SAMPLE);apply(src.value,true)};
+$('#aU').onclick=()=>{manual={};anim=true;src.value=fmt(SAMPLE_UC);apply(src.value,true)};
+const exp=m=>{const S=D._src||D;$('#out').value=m==='puml'?plantuml(S):m==='mmd'?mermaid(S):fmt(S)};
+$('#bX').onclick=()=>{exp('puml');$('#dlg').showModal()};$('#cl').onclick=()=>$('#dlg').close();
+document.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>exp(b.dataset.x));
+$('#cp').onclick=()=>{const o=$('#out');o.select();try{navigator.clipboard.writeText(o.value).catch(()=>document.execCommand('copy'))}catch(e){document.execCommand('copy')}$('#cp').textContent='Copied';setTimeout(()=>$('#cp').textContent='Copy',1200)};
+const toggleEd=()=>{$('#ed').classList.toggle('open');$('#bE').classList.toggle('on')};$('#bE').onclick=toggleEd;
+
+const toggleHier=()=>{if(!sel)return pill('Select a class first');hier=!hier;paint();side()};$('#bH').onclick=toggleHier;
+$('#bT').onclick=()=>{const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=dark?'light':'dark';save('uml:theme',r.dataset.theme)};
+const present=on=>{document.body.classList.toggle('present',on);pill(on?((D.views||[]).length?'← → step through views · Esc exits':'Esc exits'):'');setTimeout(()=>fit(view&&view.classes),0)};
+$('#bF').onclick=()=>present(true);
+const setView=id=>{view=(D.views||[]).find(v=>v.id===id)||null;render();fit(view&&view.classes)};
+$('#views').onclick=e=>{const b=e.target.closest('[data-v]');if(b)setView(b.dataset.v)};
+$('#insp').onclick=e=>{const a=e.target.closest('[data-go]');if(a)return pick(a.dataset.go,true);if(e.target.closest('#back'))return pick(null);if(e.target.id==='bHi')return toggleHier();const g=e.target.closest('[data-g]');if(g){const k=g.dataset.g;hidden.has(k)?hidden.delete(k):hidden.add(k);side();paint()}};
+
+$('#q').addEventListener('input',paint);
+addEventListener('keydown',e=>{const tg=e.target.tagName;if(e.key==='Escape'){if(document.body.classList.contains('present'))present(false);$('#q').value='';if(tg==='INPUT'||tg==='TEXTAREA')e.target.blur();hier=false;pill('');pick(null);return}
+ if(tg==='INPUT'||tg==='TEXTAREA'||e.metaKey||e.ctrlKey)return;const k=e.key.toLowerCase();
+ if(k==='/'){e.preventDefault();openSearch()}else if(k==='h')toggleHier();else if(k==='f')present(!document.body.classList.contains('present'));else if(k==='e')toggleEd();
+ else if(document.body.classList.contains('present')&&(e.key==='ArrowRight'||e.key==='ArrowLeft')){const vs=D.views||[];if(!vs.length)return;let i=view?vs.findIndex(v=>v.id===view.id):-1;i+=e.key==='ArrowRight'?1:-1;setView(i<0||i>=vs.length?'':vs[i].id);pill(view?view.label:'All classes')}});
+addEventListener('resize',()=>fit(view&&view.classes));
+const th=load('uml:theme');if(th)document.documentElement.dataset.theme=th;
+let emb=null;try{const t=document.getElementById('uml-data').textContent.trim();if(t)emb=fmt(JSON.parse(t))}catch(e){}
+if(emb)document.body.classList.add('viewer');
+src.value=emb||load('uml:src')||fmt(SAMPLE_UC);
+try{if(check(JSON.parse(src.value)).length)src.value=fmt(SAMPLE_UC)}catch(e){src.value=fmt(SAMPLE_UC)}
+apply(src.value,true);
+const hm=(location.hash||'').match(/^#c-(\w+)$/);if(hm&&cm[hm[1]])pick(hm[1]);
+const openSearch=()=>{$('.tb').classList.add('s');$('#q').focus()};
+$('#bS').onclick=openSearch;$('#q').addEventListener('blur',()=>{if(!$('#q').value)$('.tb').classList.remove('s')});
+$('#edx').onclick=toggleEd;$('#goEd').onclick=()=>{$('#ed').classList.add('open');$('#bE').classList.add('on')};
+$('#cc').onclick=()=>{try{navigator.clipboard.writeText('node bin/uml.mjs deliver diagram.json --open')}catch(e){}$('#cc').classList.add('on');setTimeout(()=>$('#cc').classList.remove('on'),1200)};
+/* how it works: a four-step walkthrough that plays when it scrolls into view */
+const TL=[[`<div class="prompt"><i>›</i>Make a UML use-case diagram of the checkout flow.</div>`],
+ [`<b>Write</b><u>.uml/shop/diagram.json</u>`,`<s>2 actors · 3 use cases · 4 relations</s>`],
+ [`<b>Run</b>uml-designer validate diagram.json`,`<span class="er">error  unknown-node</span>`,`<s>relations[0].to "Chekout" is not an actor or use case.</s>`,`<s>Use one of: Customer, Payments, Checkout, Pay, Receipt.</s>`,`<span class="er">✗ 1 error</span>`,`<b>Edit</b><u>relations[0].to → "Checkout"</u>`,`<b>Run</b>uml-designer validate diagram.json`,`<span class="ok">✓ valid: no diagnostics</span>`],
+ [`<b>Run</b>uml-designer deliver diagram.json`,`<b>delivered</b><u>.uml/shop/diagram.html</u>`,`<s>one file · opens offline</s>`]];
+const J=['{','  "type": "usecase",','  "title": "Online shop",','  "actors": [','    { "id": "Customer", "label": "Customer" },','    { "id": "Payments", "label": "Payment Service", "side": "right" }','  ],','  "usecases": [','    { "id": "Checkout" }, { "id": "Pay" }, { "id": "Receipt" }','  ],','  "relations": [','    { "from": "Customer", "to": "Checkout", "type": "associates" },','    { "from": "Checkout", "to": "Pay", "type": "include" },','    …','  ]','}'];
+const ERR=11;
+const fig=(x,y)=>`<g class="fig"><circle cx="${x}" cy="${y-24}" r="9"/><path d="M${x} ${y-15}V${y+10}M${x-13} ${y-6}H${x+13}M${x} ${y+10}L${x-11} ${y+30}M${x} ${y+10}L${x+11} ${y+30}"/></g>`;
+const PV=`<div class="pv"><svg viewBox="0 0 380 240"><rect class="bx" x="106" y="8" width="168" height="224" rx="6"/><text class="sm" x="116" y="24">«subsystem» Shop</text>
+<g class="ed"><path d="M58 112L134 62M322 114L248 120"/><path class="d" d="M190 74V99M185 93L190 99L195 93M190 166V141M185 147L190 141L195 147"/></g>
+<g class="n" style="animation-delay:.05s">${fig(40,120)}<text x="40" y="168" text-anchor="middle">Customer</text></g>
+<g class="n" style="--c:#2f80d1;animation-delay:.2s"><ellipse cx="190" cy="54" rx="60" ry="20"/><text x="190" y="59" text-anchor="middle">Checkout</text></g>
+<g class="n" style="--c:#2da58a;animation-delay:.35s"><ellipse cx="190" cy="120" rx="60" ry="20"/><text x="190" y="125" text-anchor="middle">Pay</text></g>
+<g class="n" style="--c:#d98a1f;animation-delay:.5s"><ellipse cx="190" cy="186" rx="60" ry="20"/><text x="190" y="191" text-anchor="middle">Receipt</text></g>
+<g class="n" style="animation-delay:.65s">${fig(340,120)}<text x="340" y="168" text-anchor="middle">Payments</text></g></svg></div>`;
+const hl=l=>l.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])).replace(/"([^"]*)"(:?)/g,(m,a,c)=>c?`<b>"${a}"</b>:`:`<span class="s">"${a}"</span>`);
+const steps=$('#steps');let step=-1,timer=null;
+function setStep(n){step=n;[...steps.children].forEach((li,i)=>{li.classList.toggle('on',i===n);li.classList.toggle('done',i<n)});$('#fill').style.width=n*25+'%';
+ $('#term').innerHTML=TL.slice(0,n+1).map((ls,si)=>ls.map((l,i)=>`<div class="tl ${si===n?'new':'old'}" style="animation-delay:${i*150}ms">${l}</div>`).join('')).join('');
+ const row=(k,l,c,i)=>`<div class="jl ${c||''}" style="animation-delay:${i*80}ms"><i>${k}</i><span>${hl(l)}</span></div>`,p=$('#pane');
+ $('#pname').textContent=n===3?'diagram.html':'diagram.json';$('#ptag').textContent=n===3?'Opens offline':'';
+ if(n===0)p.innerHTML='<span class="caret"></span>';
+ else if(n===1)p.innerHTML=J.map((l,i)=>row(i+1,l,'an',i)).join('');
+ else if(n===2)p.innerHTML=J.map((l,i)=>i===ERR?row('−',l.replace('"Checkout"','"Chekout"'),'del')+row('+',l,'add'):row(i+1,l)).join('');
+ else p.innerHTML=PV}
+const play=()=>{clearInterval(timer);if(matchMedia('(prefers-reduced-motion:reduce)').matches){setStep(3);return}timer=setInterval(()=>setStep((step+1)%4),3600)};
+[...steps.children].forEach((li,i)=>li.onclick=()=>{setStep(i);play()});
+if('IntersectionObserver'in window){
+ new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){if(step<0)setStep(0);play()}else clearInterval(timer)}),{threshold:.4}).observe(document.querySelector('.demo'));
+ const rv=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll('.rv').forEach(x=>rv.observe(x))}
+else{document.querySelectorAll('.rv').forEach(x=>x.classList.add('in'));setStep(3)}
+</script>
+</body></html>

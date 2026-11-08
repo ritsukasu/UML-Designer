@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-label="uml-designer: every diagram of your code, on one sheet. UML use-case and class diagrams your coding agent writes, as one interactive offline HTML file.">
+<defs><pattern id="d" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#212126"/></pattern></defs>
+<g font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif">
+<rect width="1280" height="400" fill="#101011"/><rect width="1280" height="400" fill="url(#d)"/>
+<g transform="translate(64,62)" fill="none" stroke="#f2f2f4" stroke-width="2"><rect x="0" y="0" width="22" height="19" rx="4"/><path d="M0 8h22"/><rect x="18" y="26" width="20" height="16" rx="4"/><path d="M11 19v7h7"/></g>
+<text x="108" y="94" font-size="26" font-weight="600" fill="#f2f2f4">uml-designer</text>
+<text x="64" y="190" font-size="52" font-weight="650" letter-spacing="-1.6" fill="#f2f2f4">Every diagram of your code,</text>
+<text x="64" y="256" font-size="52" font-weight="650" letter-spacing="-1.6" fill="#f2f2f4">on <tspan fill="#f5b84b">one sheet.</tspan></text>
+<text x="64" y="310" font-size="21" fill="#9b9ba5">UML use-case and class diagrams your coding agent</text>
+<text x="64" y="340" font-size="21" fill="#9b9ba5">writes, as one interactive offline HTML file.</text>
+<rect x="882" y="70" width="206" height="262" rx="10" fill="#171719" fill-opacity=".7" stroke="#4a4a54" stroke-width="1.6"/>
+<text x="898" y="94" font-size="12" fill="#9b9ba5" font-family="ui-monospace,Menlo,Consolas,monospace">«subsystem» Shop</text>
+<g stroke="#4a4a54" stroke-width="1.6" fill="none"><path d="M846 215L907 150M846 215L903 275M1138 215L1067 215"/><path stroke-dasharray="6 5" d="M985 172V188M980 182L985 188L990 182M985 258V242M980 248L985 242L990 248"/></g>
+<g stroke="#f2f2f4" stroke-width="2.2" fill="none" stroke-linecap="round"><circle cx="822" cy="185" r="11"/><path d="M822 196V229M806 207H838M822 229L809 255M822 229L835 255"/></g><g stroke="#f2f2f4" stroke-width="2.2" fill="none" stroke-linecap="round"><circle cx="1162" cy="185" r="11"/><path d="M1162 196V229M1146 207H1178M1162 229L1149 255M1162 229L1175 255"/></g>
+<text x="822" y="282" text-anchor="middle" font-size="13" font-weight="600" fill="#f2f2f4">Customer</text><text x="1162" y="282" text-anchor="middle" font-size="13" font-weight="600" fill="#f2f2f4">Payments</text>
+<ellipse cx="985" cy="145" rx="82" ry="27" fill="#2f80d1" fill-opacity=".14" stroke="#2f80d1" stroke-opacity=".7" stroke-width="1.8"/><text x="985" y="150" text-anchor="middle" font-size="15" font-weight="600" fill="#f2f2f4">Checkout</text><ellipse cx="985" cy="215" rx="82" ry="27" fill="#2da58a" fill-opacity=".14" stroke="#2da58a" stroke-opacity=".7" stroke-width="1.8"/><text x="985" y="220" text-anchor="middle" font-size="15" font-weight="600" fill="#f2f2f4">Pay</text><ellipse cx="985" cy="285" rx="82" ry="27" fill="#d98a1f" fill-opacity=".14" stroke="#d98a1f" stroke-opacity=".7" stroke-width="1.8"/><text x="985" y="290" text-anchor="middle" font-size="15" font-weight="600" fill="#f2f2f4">Send Receipt</text></g></svg>

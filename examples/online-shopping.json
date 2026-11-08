@@ -1,0 +1,66 @@
+{
+  "type": "usecase",
+  "title": "Online shopping",
+  "system": "Online Shopping",
+  "stereotype": "subsystem",
+  "actors": [
+    { "id": "WebCustomer", "label": "Web Customer", "abstract": true },
+    { "id": "Registered", "label": "Registered Customer" },
+    { "id": "NewCustomer", "label": "New Customer" },
+    { "id": "Auth", "label": "Authentication", "stereotype": "service", "side": "right" },
+    { "id": "IdP", "label": "Identity Provider", "side": "right" },
+    { "id": "Card", "label": "Credit Payment Service", "side": "right" },
+    { "id": "PayPal", "label": "PayPal", "side": "right" }
+  ],
+  "usecases": [
+    { "id": "ViewItems", "label": "View Items" },
+    { "id": "MakePurchase", "label": "Make Purchase", "abstract": true },
+    { "id": "Checkout", "label": "Checkout" },
+    { "id": "ClientRegister", "label": "Client Register" }
+  ],
+  "relations": [
+    { "from": "Registered", "to": "WebCustomer", "type": "generalizes" },
+    { "from": "NewCustomer", "to": "WebCustomer", "type": "generalizes" },
+    { "from": "Registered", "to": "ViewItems", "type": "associates" },
+    { "from": "Registered", "to": "MakePurchase", "type": "associates" },
+    { "from": "NewCustomer", "to": "ViewItems", "type": "associates" },
+    { "from": "NewCustomer", "to": "ClientRegister", "type": "associates" },
+    { "from": "MakePurchase", "to": "ViewItems", "type": "include" },
+    { "from": "MakePurchase", "to": "Checkout", "type": "include" },
+    { "from": "Auth", "to": "ViewItems", "type": "associates" },
+    { "from": "Auth", "to": "Checkout", "type": "associates" },
+    { "from": "Auth", "to": "ClientRegister", "type": "associates" },
+    { "from": "IdP", "to": "ViewItems", "type": "associates" },
+    { "from": "IdP", "to": "Checkout", "type": "associates" },
+    { "from": "Card", "to": "Checkout", "type": "associates" },
+    { "from": "PayPal", "to": "Checkout", "type": "associates" }
+  ],
+  "views": [
+    {
+      "id": "purchase",
+      "label": "Purchase flow",
+      "nodes": [
+        "Registered",
+        "WebCustomer",
+        "MakePurchase",
+        "ViewItems",
+        "Checkout",
+        "Auth",
+        "IdP",
+        "Card",
+        "PayPal"
+      ]
+    },
+    {
+      "id": "signup",
+      "label": "Registration",
+      "nodes": [
+        "NewCustomer",
+        "WebCustomer",
+        "ClientRegister",
+        "ViewItems",
+        "Auth"
+      ]
+    }
+  ]
+}

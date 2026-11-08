@@ -1,0 +1,23 @@
+{
+  "type": "usecase",
+  "title": "Item search",
+  "system": "Online Shopping",
+  "stereotype": "subsystem",
+  "actors": [
+    { "id": "Customer", "label": "Web Customer" },
+    { "id": "Catalog", "label": "Catalog Service", "stereotype": "service", "side": "right" }
+  ],
+  "usecases": [
+    { "id": "ViewItems", "label": "View Items" },
+    { "id": "SearchItems", "label": "Search Items" },
+    { "id": "BrowseCatalog", "label": "Browse Catalog" },
+    { "id": "AddToCart", "label": "Add to Cart" }
+  ],
+  "relations": [
+    { "from": "Customer", "to": "ViewItems", "type": "associates" },
+    { "from": "Catalog", "to": "ViewItems", "type": "associates" },
+    { "from": "SearchItems", "to": "ViewItems", "type": "extend" },
+    { "from": "BrowseCatalog", "to": "ViewItems", "type": "extend" },
+    { "from": "AddToCart", "to": "ViewItems", "type": "extend" }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "uml-designer",
+  "version": "0.1.0",
+  "description": "Interactive UML class and use-case diagrams from a small JSON, delivered as one offline HTML file.",
+  "type": "module",
+  "bin": {
+    "uml-designer": "bin/uml.mjs",
+    "uml": "bin/uml.mjs"
+  },
+  "files": [
+    "bin",
+    "web",
+    "examples",
+    "AGENTS.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "validate": "node bin/uml.mjs validate examples/online-shopping.json",
+    "demo": "node bin/uml.mjs deliver examples/online-shopping.json --out dist/online-shopping.html --open"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "uml",
+    "use-case-diagram",
+    "class-diagram",
+    "diagram",
+    "cli",
+    "coding-agents"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ritsukasu/UML-Designer.git"
+  },
+  "homepage": "https://github.com/ritsukasu/UML-Designer#readme"
+}
